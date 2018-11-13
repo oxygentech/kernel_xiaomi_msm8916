@@ -79,10 +79,12 @@ dtb-$(CONFIG_ARCH_MSM8909) += msm8909-sim.dtb \
 	apq8009-mtp-wcd9326-refboard.dtb \
 	apq8009-512mb-mtp-wcd9326-refboard.dtb
 
-ifeq ($(CONFIG_MACH_XIAOMI_IDO),y)
-dtb-$(CONFIG_ARCH_MSM8916) += msm8939-qrd-ido.dtb
-else
-dtb-$(CONFIG_ARCH_MSM8916) += msm8916-cdp.dtb \
+ifneq ($(CONFIG_BUILD_ARM64_APPENDED_DTB_IMAGE),y)
+# Build non-treble DTB as well
+dtb-$(CONFIG_ARCH_MSM8916) += msm8939-qrd-ido-non-treble.dtb
+endif
+dtb-$(CONFIG_ARCH_MSM8916) += msm8939-qrd-ido-treble.dtb
+
 	msm8916-cdp-smb1360.dtb \
 	msm8916-mtp.dtb \
 	msm8916-mtp-smb1360.dtb \

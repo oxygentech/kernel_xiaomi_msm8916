@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# Copyright © 2018, "penglezos" <panagiotisegl@gmail.com>
+# Thanks to Vipul Jha for zip creator
+# Android Kernel Compilation Script
+#
+
+tput reset
+echo -e "==============================================="
+echo    "         Compiling OxygenTech Kernel             "
+echo -e "==============================================="
+
+LC_ALL=C date +%Y-%m-%d
+date=`date +"%Y%m%d-%H%M"`
+BUILD_START=$(date +"%s")
+KERNEL_DIR=$PWD
+REPACK_DIR=$KERNEL_DIR/zip
+OUT=$KERNEL_DIR/out
+VERSION="ido-1.0"
+DATE=`date +"%Y%m%d"`
+export ARCH=arm64 && export SUBARCH=arm64
+export CROSS_COMPILE="/home/oxygen/toolchain/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+
+rm -rf out
+mkdir -p out
+make O=out clean
+make O=out mrproper
+make O=out lineage_ido_defconfig
+make O=out -j$(nproc --all)
+
+BUILD_END=$(date +"%s")
+DIFF=$(($BUILD_END - $BUILD_START))
+echo -e "Build completed in $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
